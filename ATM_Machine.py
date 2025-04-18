@@ -51,18 +51,19 @@ def login():
 
 def same_bank():
     Input = input(f"Welcome to {Bank}!\n1. Withdraw\n2. Deposit\n3. Check User Details\n4. Help\n5. Exit\nInput: ")
-    if Input == "1":
-        os.system("cls")
-        withdraw()
-    elif Input == "2":
-        os.system("cls")
-        deposit()
-    elif Input == "3":
-        os.system("cls")
-        details()
-    else:
-        print("Invalid Input. Please try again.")
-        same_bank()
+    match Input:
+        case "1":
+            os.system("cls")
+            withdraw()
+        case "2":
+            os.system("cls")
+            deposit()
+        case "3":
+            os.system("cls")
+            details()
+        case _:
+            print("Invalid Input. Please try again.")
+            same_bank()
 
 def withdraw():
     global Balance
@@ -97,18 +98,19 @@ def details():
 
 def diff_menu():
     Input = input(f"Welcome to {Bank}!\n1. Withdraw\n2. Deposit\n3. Check User Details\n4. Help\n5. Exit\nInput: ")
-    if Input == "1":
-        os.system("cls")
-        diff_withdraw()
-    elif Input == "2":
-        os.system("cls")
-        diff_deposit()
-    elif Input == "3":
-        os.system("cls")
-        diff_details()
-    else:
-        print("Invalid Input. Please try again.")
-        diff_menu()
+    match Input:
+        case "1":
+            os.system("cls")
+            diff_withdraw()
+        case "2":
+            os.system("cls")
+            diff_deposit()
+        case "3":
+            os.system("cls")
+            diff_details()
+        case _:
+            print("Invalid Input. Please try again.")
+            diff_menu()
 
 def different_bank():
     print(f"We detected that you are using a different type of card from {Bank_Reg}.\nWe will be charging an additional fee for any transaction due to out-of-network operation.")
