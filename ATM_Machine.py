@@ -13,8 +13,7 @@ def register():
     last_name = input("Last Name: ").title()
     PIN_reg = int(input("Please set-up your PIN: "))
     print(f"Thank you for using our service {first_name} {last_name}. Here is your Card Information {BIN}{Account_Number}")
-    os.system("pause")
-    os.system("cls")
+    os.system("pause & cls")
 
 Bank_Reg = input("What bank were you registering (BDO, BPI, etc)? ").upper()
 if Bank_Reg == "BDO":
@@ -36,17 +35,20 @@ else:
 def login():
     global PIN_reg, Bank_Reg, Bank
     Bank = input("What bank you will use for transaction? ").upper()
-    PIN_Login = int(input("Insert your card and enter your PIN.\nPIN: "))
+    print("Please insert your card.")
+    os.system("pause")
+    print("Card Recognized.")
+    PIN_Login = int(input("Enter your PIN.\nPIN: "))
     if PIN_Login == PIN_reg:
         print("PIN is correct")
-        os.system("pause")
-        os.system("cls")
+        os.system("pause & cls")
         if Bank == Bank_Reg:
             same_bank()
         else:
             different_bank()
     else:
-        print("PIN is incorrect")
+        print("PIN is incorrect. Please try again.")
+        os.system("pause & cls")
         login()
 
 def same_bank():
@@ -62,6 +64,7 @@ def same_bank():
         details()
     else:
         print("Invalid Input. Please try again.")
+        os.system("pause & cls")
         same_bank()
 
 def withdraw():
@@ -69,13 +72,10 @@ def withdraw():
     Withdraw = int(input("Please enter your withdrawal amount: "))
     if Withdraw > Balance:
         print("You don't have sufficient balance for this transaction. Please try again")
-        os.system("pause")
-        os.system("cls")
+        os.system("pause & cls")
         same_bank()
     else:
         Balance = Balance - Withdraw
-        print("Transaction Complete")
-        os.system("pause")
         os.system("cls")
         same_bank()
 
@@ -83,16 +83,13 @@ def deposit():
     global Balance
     Deposit = int(input("Please enter your deposit amount: "))
     Balance = Balance + Deposit
-    same_bank()
-    print("Transaction Complete")
-    os.system("pause")
     os.system("cls")
+    same_bank()
 
 def details():
     global Balance, first_name, last_name, BIN, Account_Number
-    print(f"User: {first_name} {last_name}\nCard Number: {BIN}{Account_Number}\nRegistered Bank: {Bank_Reg}\nCurrent Bank: {Bank}")
-    os.system("pause")
-    os.system("cls")
+    print(f"User: {first_name} {last_name}\nBalance: {Balance}\nCard Number: {BIN}{Account_Number}\nRegistered Bank: {Bank_Reg}\nCurrent Bank: {Bank}")
+    os.system("pause & cls")
     same_bank()
 
 def diff_menu():
@@ -108,15 +105,18 @@ def diff_menu():
         diff_details()
     else:
         print("Invalid Input. Please try again.")
+        os.system("pause & cls")
         diff_menu()
 
 def different_bank():
     print(f"We detected that you are using a different type of card from {Bank_Reg}.\nWe will be charging an additional fee for any transaction due to out-of-network operation.")
     Input = input("Press 1 to accept the additional fee before proceeding. Press any other key to exit.\nInput: ")
-    os.system("cls")
     if Input == "1":
+        os.system("cls")
         diff_menu()
     else:
+        print("Exiting...")
+        os.system("pause & cls")
         login()
 
 def diff_withdraw():
@@ -126,12 +126,16 @@ def diff_withdraw():
     Input = input(f"The selected amount for withdrawal is {Withdraw} + {Add_Fee}(Additional Fee).\nInput 1 to proceed. Otherwise, input anything\nInput: ")
     if Input == "1":
         if Withdraw + Add_Fee > Balance:
-            print("You don't have sufficient balance for this transaction.")
+            print("You don't have sufficient balance for this transaction. Please try again")
+            os.system("pause & cls")
             diff_menu()
         else:
             Balance = Balance - (Withdraw + Add_Fee)
+            os.system("cls")
             diff_menu()
     else:
+        print("Exiting...")
+        os.system("pause & cls")
         diff_menu()
 
 def diff_deposit():
@@ -141,15 +145,17 @@ def diff_deposit():
     Input = input(f"The selected amount for deposit is {Deposit} - {Add_Fee}(Additional Fee).\nInput 1 to proceed. Otherwise, input anything\nInput: ")
     if Input == "1":
         Balance = Balance + (Deposit - Add_Fee)
+        os.system("cls")
         diff_menu()
     else:
+        print("Exiting...")
+        os.system("pause & cls")
         diff_menu()
 
 def diff_details():
     global Balance, first_name, last_name, BIN, Account_Number
-    print(f"User: {first_name} {last_name}\nCard Number: {BIN}{Account_Number}\nRegistered Bank: {Bank_Reg}\nCurrent Bank: {Bank}")
-    os.system("pause")
-    os.system("cls")
+    print(f"User: {first_name} {last_name}\nBalance: {Balance}\nCard Number: {BIN}{Account_Number}\nRegistered Bank: {Bank_Reg}\nCurrent Bank: {Bank}")
+    os.system("pause & cls")
     diff_menu()
 
 login()
