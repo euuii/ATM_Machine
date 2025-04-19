@@ -1,1 +1,4 @@
-This project was tasked to us by our teacher in the subject of CC-203
+# Subject: CC-203
+## Project: ATM Machine
+#### Instructions:
+1. Let the user register his/her own account
