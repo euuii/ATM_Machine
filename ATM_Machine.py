@@ -138,24 +138,28 @@ def different_bank():
 
 def diff_withdraw():
     global Balance
-    Withdraw = int(input("Please enter your withdrawal amount: "))
-    Add_Fee = Withdraw * 0.01
-    Input = input(f"The selected amount for withdrawal is {Withdraw} + {Add_Fee}(Additional Fee).\nInput 1 to proceed. Otherwise, input anything\nInput: ")
-    if Input == "1":
-        if Withdraw + Add_Fee > Balance:
-            print("You don't have sufficient balance for this transaction. Please try again")
+    Withdraw = int(input("Please enter your withdrawal amount with paper bills of 100, 500 or 1000: "))
+    if Withdraw % 100 == 0:
+        Add_Fee = 18
+        Input = input(f"The selected amount for withdrawal is {Withdraw} + {Add_Fee}(Additional Fee).\nInput 1 to proceed. Otherwise, input anything\nInput: ")
+        if Input == "1":
+            if Withdraw + Add_Fee > Balance:
+                print("You don't have sufficient balance for this transaction. Please try again")
+                os_pause()
+                os_clear()
+                diff_menu()
+            else:
+                Balance = Balance - (Withdraw + Add_Fee)
+                os_clear()
+                diff_menu()
+        else:
+            print("Exiting...")
             os_pause()
             os_clear()
             diff_menu()
-        else:
-            Balance = Balance - (Withdraw + Add_Fee)
-            os_clear()
-            diff_menu()
     else:
-        print("Exiting...")
-        os_pause()
-        os_clear()
-        diff_menu()
+        print("Invalid Amount. Please try again.")
+        diff_withdraw()
 
 def diff_deposit():
     global Balance
