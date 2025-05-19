@@ -13,6 +13,8 @@ def withdraw():
                         f.truncate()
                         print(balance)
                         break
+                    else:
+                        print("Insufficient balance")
                 else:
                     print("We only accept 100, 500 and 1000 cash")
             except ValueError:
