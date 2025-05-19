@@ -11,7 +11,7 @@ def withdraw():
                         balance = balance - amount
                         f.write(str(balance))
                         f.truncate()
-                        print(balance)
+                        print(f"Your balance is now {balance:.2f}")
                         break
                     else:
                         print("Insufficient balance")
