@@ -32,8 +32,7 @@ def withdraw():
                         print(f"Your balance is now {balance}")
                         os_pause()
                         os_clear()
-                        menu()
-                        break
+                        return
                     else:
                         os_clear()
                         print("Insufficient balance")
@@ -58,8 +57,7 @@ def deposit():
                     print(f"Your balance is now {balance}")
                     os_pause()
                     os_clear()
-                    menu()
-                    break
+                    return
                 else:
                     os_clear()
                     print("We only accept 100, 500 and 1000 cash")
@@ -75,11 +73,9 @@ def menu():
                 case 1:
                     os_clear()
                     withdraw()
-                    break
                 case 2:
                     os_clear()
                     deposit()
-                    break
                 case 3:
                     exit()
                 case _:
