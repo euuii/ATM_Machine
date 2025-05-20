@@ -5,28 +5,57 @@ def balance_reset():
         f.seek(0)
         f.write("10000")
 
+def start():
+    os_clear()
+    while True:
+        choice = input("Create new user? [y/n]: ").lower()
+        match choice:
+            case "y":
+                balance_reset()
+                os_clear()
+                reg_pin()
+            case "n":
+                verify_pin()
+            case _:
+                os_clear()
+                print(f": Invalid answer '{choice}'")
+
+
 def verify_pin():
     while True:
-        try:
-            with open("pin.txt", "r") as f:
-                pin = int(f.readline().strip())
-                log_pin = int(input("Enter PIN: "))
+        with open("pin.txt", "r") as f:
+            pin = f.readline().strip()
+            log_pin = input("Enter login pin number: ")
+            if len(log_pin) == 6 and log_pin.isdigit():
                 if log_pin == pin:
-                    print("PIN verified")
-                    os_pause()
                     os_clear()
-                    break
+                    menu()
+                    return
                 else:
                     os_clear()
-                    print("PIN verification failed")
-        except ValueError:
-            os_clear()
-            print("Invalid input, please enter only digits")
+                    print("Wrong PIN")
+            elif not log_pin.isdigit():
+                os_clear()
+                print("PIN must be digits")
+            else:
+                os_clear()
+                print("PIN must be 6 digits")
 
 def reg_pin():
-    with open("pin.txt", "w") as f:
-        pin = int(input("Enter PIN: "))
-        f.write(str(pin))
+    while True:
+            pin = input("Enter PIN (6 digits): ")
+            if len(pin) == 6 and pin.isdigit():
+                with open(f"pin.txt", "w") as f:
+                    f.write(pin)
+                os_clear()
+                verify_pin()
+                return
+            elif not pin.isdigit():
+                os_clear()
+                print("PIN must be digits")
+            else:
+                os_clear()
+                print("PIN must be 6 digits")
 
 def os_clear():
     if os.name == "nt":
@@ -64,7 +93,7 @@ def withdraw():
                         return
                     else:
                         os_clear()
-                        print("Insufficient balance.txt")
+                        print("Insufficient balance")
                 else:
                     os_clear()
                     print("Invalid Amount")
@@ -95,7 +124,7 @@ def deposit():
 def menu():
     while True:
         try:
-            choice = int(input("(1) Check Balance \n(2) Withdraw \n(3) Deposit \n(4) Exit \nInput: "))
+            choice = int(input("[1] Check Balance \n[2] Withdraw \n[3] Deposit \n[4] Exit \nInput: "))
             match choice:
                 case 1:
                     os_clear()
@@ -107,7 +136,8 @@ def menu():
                     os_clear()
                     deposit()
                 case 4:
-                    exit()
+                    os_clear()
+                    return
                 case _:
                     os_clear()
                     print("Invalid input. Please enter a valid number.")
@@ -115,9 +145,10 @@ def menu():
             os_clear()
             print("Invalid input. Please enter a provided input.")
 
-os_clear()
+# os_clear()
 # balance_reset()
-menu()
+# menu()
 # reg_pin()
 # verify_pin()
 # check_balance()
+start()
