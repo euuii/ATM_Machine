@@ -20,7 +20,6 @@ def start():
                 os_clear()
                 print(f": Invalid answer '{choice}'")
 
-
 def verify_pin():
     while True:
         with open("pin.txt", "r") as f:
@@ -123,25 +122,20 @@ def deposit():
 
 def menu():
     while True:
-        try:
-            choice = int(input("[1] Check Balance \n[2] Withdraw \n[3] Deposit \n[4] Exit \nInput: "))
-            match choice:
-                case 1:
-                    os_clear()
-                    check_balance()
-                case 2:
-                    os_clear()
-                    withdraw()
-                case 3:
-                    os_clear()
-                    deposit()
-                case 4:
-                    os_clear()
-                    return
-                case _:
-                    os_clear()
-                    print("Invalid input. Please enter a valid number.")
-        except ValueError:
+        choice = input("[1] Check Balance \n[2] Withdraw \n[3] Deposit \n[4] Exit \nInput: ")
+        if choice == "1":
+            os_clear()
+            check_balance()
+        elif choice == "2":
+            os_clear()
+            withdraw()
+        elif choice == "3":
+            os_clear()
+            deposit()
+        elif choice == "4":
+            os_clear()
+            return
+        else:
             os_clear()
             print("Invalid input. Please enter a provided input.")
 
