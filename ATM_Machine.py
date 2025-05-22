@@ -1,5 +1,7 @@
 import os
 
+bank = ""
+
 def balance_reset():
     with open("balance.txt", "w") as f:
         f.seek(0)
@@ -13,12 +15,40 @@ def start():
             case "y":
                 balance_reset()
                 os_clear()
-                reg_pin()
+                reg_bank()
             case "n":
                 verify_pin()
             case _:
                 os_clear()
                 print(f": Invalid answer '{choice}'")
+
+def reg_bank():
+    while True:
+        global bank
+        choice = input("Choose bank \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nInput: ")
+        if choice == "1":
+            bank = "Landbank"
+            os_clear()
+            print(f"Welcome to {bank} ATM")
+            return
+        elif choice == "2":
+            bank = "BPI"
+            os_clear()
+            print(f"Welcome to {bank} ATM")
+            return
+        elif choice == "3":
+            bank = "DBP"
+            os_clear()
+            print(f"Welcome to {bank} ATM")
+            return
+        elif choice == "4":
+            bank = "BDO"
+            os_clear()
+            print(f"Welcome to {bank} ATM")
+            return
+        else:
+            os_clear()
+            print("Invalid input. Please enter a provided input.")
 
 def verify_pin():
     while True:
@@ -145,4 +175,5 @@ def menu():
 # reg_pin()
 # verify_pin()
 # check_balance()
-start()
+reg_bank()
+# start()
