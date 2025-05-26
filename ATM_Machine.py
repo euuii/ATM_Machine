@@ -210,7 +210,7 @@ def withdraw():
                                 balance = balance - amount
                             else: #Instruction 4: if the user has a different bank, will charge P18.00 for each "withdraw"
                                 while True:
-                                    choice = input(f"You will be deducted an additional P18 for out-of-network transaction. \nRegistered Bank: {bank}\nCurrent Bank: {current_bank}\nProceed? [y/n]: ").lower()
+                                    choice = input(f"You will be deducted an additional P18 for out-of-network transaction. \nRegistered Bank: {bank}\nCurrent Bank: {current_bank}\nProceed? [y/n] (y): ").lower()
                                     if choice == "y" or choice == "":
                                         if (amount + 18) <= balance:
                                             balance = balance - (amount + 18)
