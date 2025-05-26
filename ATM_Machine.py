@@ -39,37 +39,39 @@ def start():
 
 def reg_bank():
     global bank
-    with open("bank.txt", "w") as f:
-        bank = f.read().strip()
-        while True:
-            choice = input("Registration \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nBank: ") #Instruction 3: should consider different banks (Landbank, BPI, DBP and BDO)
-            if choice == "1":
-                bank = "Landbank"
+    while True:
+        choice = input("Registration \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nBank: ") #Instruction 3: should consider different banks (Landbank, BPI, DBP and BDO)
+        if choice == "1":
+            bank = "Landbank"
+            with open("bank.txt", "w") as f:
                 f.write(bank)
-                os_clear()
-                reg_pin()
-                return
-            elif choice == "2":
-                bank = "BPI"
+            os_clear()
+            reg_pin()
+            return
+        elif choice == "2":
+            bank = "BPI"
+            with open("bank.txt", "w") as f:
                 f.write(bank)
-                os_clear()
-                reg_pin()
-                return
-            elif choice == "3":
-                bank = "DBP"
+            os_clear()
+            reg_pin()
+            return
+        elif choice == "3":
+            bank = "DBP"
+            with open("bank.txt", "w") as f:
                 f.write(bank)
-                os_clear()
-                reg_pin()
-                return
-            elif choice == "4":
-                bank = "BDO"
+            os_clear()
+            reg_pin()
+            return
+        elif choice == "4":
+            bank = "BDO"
+            with open("bank.txt", "w") as f:
                 f.write(bank)
-                os_clear()
-                reg_pin()
-                return
-            else:
-                os_clear()
-                print(f"Invalid input {choice}. Please enter a provided input.")
+            os_clear()
+            reg_pin()
+            return
+        else:
+            os_clear()
+            print(f"Invalid input {choice}. Please enter a provided input.")
 
 def reg_pin():
     print(f"Welcome to {bank} ATM")
