@@ -29,46 +29,54 @@ def start():
             os_clear()
             reg_bank()
         elif choice == "n":
-            verify_pin()
+            os_clear()
+            log_bank()
         elif choice == "?":
             print("y: Yes, register new user \nn: No, login previous user")
         else:
             os_clear()
-            print(f": Invalid answer '{choice}'")
+            print(f": Invalid input '{choice}'")
 
 def reg_bank():
-    while True:
-        global bank
-        choice = input("Registration \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nBank: ") #Instruction 3: should consider different banks (Landbank, BPI, DBP and BDO)
-        if choice == "1":
-            bank = "Landbank"
-            os_clear()
-            reg_pin()
-            return
-        elif choice == "2":
-            bank = "BPI"
-            os_clear()
-            reg_pin()
-            return
-        elif choice == "3":
-            bank = "DBP"
-            os_clear()
-            reg_pin()
-            return
-        elif choice == "4":
-            bank = "BDO"
-            os_clear()
-            return
-        else:
-            os_clear()
-            print("Invalid input. Please enter a provided input.")
+    global bank
+    with open("bank.txt", "w") as f:
+        bank = f.read().strip()
+        while True:
+            choice = input("Registration \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nBank: ") #Instruction 3: should consider different banks (Landbank, BPI, DBP and BDO)
+            if choice == "1":
+                bank = "Landbank"
+                f.write(bank)
+                os_clear()
+                reg_pin()
+                return
+            elif choice == "2":
+                bank = "BPI"
+                f.write(bank)
+                os_clear()
+                reg_pin()
+                return
+            elif choice == "3":
+                bank = "DBP"
+                f.write(bank)
+                os_clear()
+                reg_pin()
+                return
+            elif choice == "4":
+                bank = "BDO"
+                f.write(bank)
+                os_clear()
+                reg_pin()
+                return
+            else:
+                os_clear()
+                print(f"Invalid input {choice}. Please enter a provided input.")
 
 def reg_pin():
     print(f"Welcome to {bank} ATM")
     while True:
         pin = input("Enter PIN (6 digits): ")
         if len(pin) == 6 and pin.isdigit():
-            with open(f"pin.txt", "w") as f:
+            with open(f"pin.txt", "w") as f: #Instruction 9. will store and retrieve PIN on a 'pin.txt' file.
                 f.write(pin)
             os_clear()
             log_bank()
@@ -83,7 +91,7 @@ def reg_pin():
 def log_bank():
     while True:
         global current_bank
-        choice = input("Bank to use for transaction \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nBank: ") #Instruction 3: should consider different banks (Landbank, BPI, DBP and BDO)
+        choice = input("Bank to use for transaction \n[1] Landbank \n[2] BPI \n[3] DBP \n[4] BDO \nBank: ")
         if choice == "1":
             current_bank = "Landbank"
             os_clear()
@@ -110,7 +118,7 @@ def log_bank():
 
 def verify_pin():
     while True:
-        with open("pin.txt", "r") as f:
+        with open("pin.txt", "r") as f: #Instruction 9. will store and retrieve PIN on a 'pin.txt' file.
             pin = f.readline().strip()
             log_pin = input("Enter login pin number: ")
             if len(log_pin) == 6 and log_pin.isdigit():
@@ -130,7 +138,7 @@ def verify_pin():
 
 def menu():
     while True:
-        choice = input("[1] Check Balance \n[2] Withdraw \n[3] Deposit \n[4] Exit \nInput: ")
+        choice = input("[1] Check Balance \n[2] Withdraw \n[3] Deposit \n[4] Change PIN \n[5] Exit\nInput: ")
         if choice == "1":
             os_clear()
             check_balance()
@@ -142,57 +150,99 @@ def menu():
             deposit()
         elif choice == "4":
             os_clear()
-            return
+            change_pin()
+        elif choice == "5":
+            exit()
         else:
             os_clear()
-            print("Invalid input. Please enter a provided input.")
+            print(f"Invalid input {choice}. Please enter a provided input.")
 
 def check_balance():
-    with open("balance.txt", "r") as f:
+    global bank
+    with open("balance.txt", "r+") as f:
         balance = f.readline().strip()
-        print(f"Your balance is: {balance}")
-        os_pause()
-        os_clear()
-        return
+        with open("bank.txt", "r") as bank_file:
+            bank = bank_file.readline().strip()
+            if bank == current_bank:
+                print(f"Your balance is: {balance}")
+            else: #Instruction 5: if the user has a different bank, will charge P2.00 for each 'check balance'
+                choice = input(f"You will be deducted P2 for using out-of-network transaction. \nRegistered Bank: {bank}\nCurrent Bank: {current_bank}\nProceed? [y/n] (y): ").lower()
+                if choice == "y" or choice == "":
+                    if (int(balance) - 2) > 0:
+                        f.seek(0)
+                        balance = int(balance) - 2
+                        f.write(str(balance))
+                        f.truncate()
+                        print(f"Your balance is: {balance}")
+                    else:
+                        os_clear()
+                        print("Insufficient Fund")
+                        os_pause()
+                        os_clear()
+                        return
+                elif choice == "n":
+                    os_clear()
+                    return
+                else:
+                    os_clear()
+                    print(f"Invalid input {choice}. Enter a valid choice.")
+                    os_pause()
+                    os_clear()
+                    return
+            os_pause()
+            os_clear()
+            return
 
 def withdraw():
+    global bank
     with open("balance.txt", "r+") as f:
         balance = int(f.read().strip())
         while True:
             amount = input("Withdraw amount: ")
             if amount.isdigit():
                 amount = int(amount)
-                if amount % 100 == 0 and amount > 0:
+                if amount % 100 == 0 and amount > 0: #Intruction 6: will only dispense amount of P1000, P500, P100
                     if amount <= balance:
                         f.seek(0)
-                        if bank == current_bank:
-                            balance = balance - amount
-                        else: #Instruction 4: if the user has a different bank, will charge P18.00 for each "withdraw"
-                            choice = input(f"You will be deducted an additional P18 for out-of-network transaction. \nRegistered Bank: {bank}\nCurrent Bank: {current_bank}\nProceed? [y/n]: ").lower()
-                            while True:
-                                if choice == "y" or choice == "":
-                                    if (amount + 18) <= balance:
-                                        balance = balance - (amount + 18)
-                                        break
+                        with open("bank.txt", "r") as bank_file:
+                            bank = bank_file.readline().strip()
+                            if bank == current_bank:
+                                balance = balance - amount
+                            else: #Instruction 4: if the user has a different bank, will charge P18.00 for each "withdraw"
+                                while True:
+                                    choice = input(f"You will be deducted an additional P18 for out-of-network transaction. \nRegistered Bank: {bank}\nCurrent Bank: {current_bank}\nProceed? [y/n]: ").lower()
+                                    if choice == "y" or choice == "":
+                                        if (amount + 18) <= balance:
+                                            balance = balance - (amount + 18)
+                                            break
+                                        else:
+                                            os_clear()
+                                            print("Insufficient Fund")
+                                            return
+                                    elif choice == "n":
+                                        os_clear()
+                                        return
                                     else:
                                         os_clear()
-                                        print("Insufficient Fund")
-                                        return
-                                else:
-                                    os_clear()
-                                    print("Enter a valid choice.")
+                                        print(f"Invalid input {choice}. Enter a valid choice.")
                         f.write(str(balance))
                         f.truncate()
-                        check_balance()
+                        print("Transaction successful")
+                        os_pause()
+                        os_clear()
                         return
                     else:
                         os_clear()
-                        print("Insufficient Fund")
+                        print("Insufficient Fund") #Instruction 7. will display 'insufficient fund' if 'current balance' is less than 'withdraw amount'
                         os_pause()
                         os_clear()
+                        return
                 else:
                     os_clear()
-                    print("Invalid Amount")
+                    print("Invalid Amount")#Instruction 8. will display 'invalid amount' if 'withdraw amount' is not valid.
+                    os_pause()
+                    os_clear()
+                    return
             else:
                 os_clear()
                 print("Invalid input. Please enter a valid number.")
@@ -207,9 +257,11 @@ def deposit():
                 if amount % 100 == 0 and amount > 0:
                     f.seek(0)
                     balance = balance + amount
-                    f.write(str(balance))
+                    f.write(str(balance)) #Instruction 10. will store and retrieve 'current balance' on the 'balance.txt' file
                     f.truncate()
-                    check_balance()
+                    print("Transaction successful")
+                    os_pause()
+                    os_clear()
                     return
                 else:
                     os_clear()
@@ -218,6 +270,21 @@ def deposit():
                 os_clear()
                 print("Invalid input. Please enter a valid number.")
 
+def change_pin():
+    while True:
+        pin = input("Enter new PIN: ")
+        if len(pin) == 6 and pin.isdigit():
+            with open("pin.txt", "w") as f:
+                f.write(pin)
+            os_clear()
+            print("Pin changed successfully")
+            os_pause()
+            os_clear()
+            return
+        else:
+            os_clear()
+            print("PIN must be 6 digits")
+
 # os_clear()
 # balance_reset()
 # menu()
@@ -225,4 +292,6 @@ def deposit():
 # verify_pin()
 # check_balance()
 # reg_bank()
+# change_pin()
 start()
+# withdraw()
