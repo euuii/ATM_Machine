@@ -237,6 +237,8 @@ def withdraw():
                                         else:
                                             os_clear()
                                             print("Insufficient Fund")
+                                            os_pause()
+                                            os_clear()
                                             return
                                     elif choice == "n":
                                         os_clear()
@@ -285,6 +287,9 @@ def deposit():
                 else:
                     os_clear()
                     print("The only dispensable amount is 1000, 500 and 100")
+                    os_pause()
+                    os_clear()
+                    return
             else:
                 os_clear()
                 print("Invalid input. Please enter a valid number.")
