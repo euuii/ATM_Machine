@@ -30,8 +30,9 @@ def start():
             reg_bank()
         elif choice == "n":
             os_clear()
-            log_bank()
+            verify_account()
         elif choice == "?":
+            os_clear()
             print("y: Yes, register new user \nn: No, login previous user")
         else:
             os_clear()
@@ -89,6 +90,22 @@ def reg_pin():
         else:
             os_clear()
             print("PIN must be 6 digits")
+
+def verify_account():
+    try:
+        with open("bank.txt", "r"):
+            pass
+        with open("pin.txt", "r"):
+            pass
+
+        log_bank()
+
+    except FileNotFoundError:
+        os_clear()
+        print("No bank account found. Please register a new account.")
+        os_pause()
+        os_clear()
+        return
 
 def log_bank():
     while True:
@@ -297,3 +314,4 @@ def change_pin():
 # change_pin()
 start()
 # withdraw()
+# verify_account()
