@@ -275,7 +275,7 @@ def deposit():
             amount = input("Enter the amount you want to deposit: ")
             if amount.isdigit():
                 amount = int(amount)
-                if amount % 100 == 0 and amount > 0:
+                if amount > 0:
                     f.seek(0)
                     balance = balance + amount
                     f.write(str(balance)) #Instruction 10. will store and retrieve 'current balance' on the 'balance.txt' file
@@ -284,15 +284,9 @@ def deposit():
                     os_pause()
                     os_clear()
                     return
-                else:
-                    os_clear()
-                    print("The only dispensable amount is 1000, 500 and 100")
-                    os_pause()
-                    os_clear()
-                    return
-            else:
-                os_clear()
-                print("Invalid input. Please enter a valid number.")
+
+            os_clear()
+            print("Invalid input. Please enter a valid number.")
 
 def change_pin():
     while True:
